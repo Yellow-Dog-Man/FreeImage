@@ -54,6 +54,10 @@ it under the terms of the one of two licenses as you choose:
 
 #include "libraw_fuji_compressed.cpp"
 
+#ifdef __ANDROID__
+#include <swab.h>
+#endif
+
 #ifdef __cplusplus
 extern "C"
 {

@@ -471,12 +471,16 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 		WebPConfigInit(&config);
 
 		// quality/speed trade-off (0=fast, 6=slower-better)
+		config.thread_level = 6;
 		config.method = 6;
+
+		config.exact = (flags & WEBP_EXACT) == WEBP_EXACT;
 
 		if((flags & WEBP_LOSSLESS) == WEBP_LOSSLESS) {
 			// lossless encoding
 			config.lossless = 1;
 			picture.use_argb = 1;
+
 		} else if((flags & 0x7F) > 0) {
 			// lossy encoding
 			config.lossless = 0;

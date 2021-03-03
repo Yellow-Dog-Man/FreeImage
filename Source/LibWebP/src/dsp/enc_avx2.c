@@ -11,7 +11,7 @@
 
 #include "src/dsp/dsp.h"
 
-#if defined(WEBP_USE_AVX2)
+#if defined(WEBP_USE_AVX2) 
 
 #endif  // WEBP_USE_AVX2
 
