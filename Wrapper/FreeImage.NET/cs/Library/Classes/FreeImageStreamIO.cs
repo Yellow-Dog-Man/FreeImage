@@ -77,6 +77,7 @@ namespace FreeImageAPI.IO
 		/// <summary>
 		/// Reads the requested data from the stream and writes it to the given address.
 		/// </summary>
+		[MonoPInvokeCallback(typeof(ReadProc))]
 		static unsafe uint streamRead(IntPtr buffer, uint size, uint count, fi_handle handle)
 		{
 			Stream stream = handle.GetObject() as Stream;
@@ -108,6 +109,7 @@ namespace FreeImageAPI.IO
 		/// <summary>
 		/// Reads the given data and writes it into the stream.
 		/// </summary>
+		[MonoPInvokeCallback(typeof(WriteProc))]
 		static unsafe uint streamWrite(IntPtr buffer, uint size, uint count, fi_handle handle)
 		{
 			Stream stream = handle.GetObject() as Stream;
@@ -140,6 +142,7 @@ namespace FreeImageAPI.IO
 		/// <summary>
 		/// Moves the streams position.
 		/// </summary>
+		[MonoPInvokeCallback(typeof(SeekProc))]
 		static int streamSeek(fi_handle handle, int offset, SeekOrigin origin)
 		{
 			Stream stream = handle.GetObject() as Stream;
@@ -154,6 +157,7 @@ namespace FreeImageAPI.IO
 		/// <summary>
 		/// Returns the streams current position
 		/// </summary>
+		[MonoPInvokeCallback(typeof(TellProc))]
 		static int streamTell(fi_handle handle)
 		{
 			Stream stream = handle.GetObject() as Stream;

@@ -4,10 +4,18 @@ using System.Diagnostics;
 
 namespace FreeImageAPI
 {
-	/// <summary>
-	/// Class handling non-bitmap related functions.
-	/// </summary>
-	public static class FreeImageEngine
+    [AttributeUsage(AttributeTargets.Method)]
+    public class MonoPInvokeCallbackAttribute : Attribute
+    {
+        public MonoPInvokeCallbackAttribute(Type type)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Class handling non-bitmap related functions.
+    /// </summary>
+    public static class FreeImageEngine
 	{
 		#region Callback
 
@@ -31,6 +39,7 @@ namespace FreeImageAPI
 		/// <summary>
 		/// Internal callback
 		/// </summary>
+        [MonoPInvokeCallback(typeof(OutputMessageFunction))]
 		private static void OnMessage(FREE_IMAGE_FORMAT fif, string message)
 		{
 			// Get a local copy of the multicast-delegate
