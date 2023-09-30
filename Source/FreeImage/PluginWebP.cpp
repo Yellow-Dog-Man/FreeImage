@@ -470,8 +470,8 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 		// Initialize encoding parameters to default values
 		WebPConfigInit(&config);
 
+		config.thread_level = 1;
 		// quality/speed trade-off (0=fast, 6=slower-better)
-		config.thread_level = 6;
 		config.method = 6;
 
 		config.exact = (flags & WEBP_EXACT) == WEBP_EXACT;
