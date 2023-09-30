@@ -470,8 +470,8 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 		// Initialize encoding parameters to default values
 		WebPConfigInit(&config);
 
+		config.thread_level = 1;
 		// quality/speed trade-off (0=fast, 6=slower-better)
-		config.thread_level = 6;
 		config.method = 6;
 
 		config.exact = (flags & WEBP_EXACT) == WEBP_EXACT;
@@ -479,6 +479,7 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 		if((flags & WEBP_LOSSLESS) == WEBP_LOSSLESS) {
 			// lossless encoding
 			config.lossless = 1;
+			config.quality = 100;
 			picture.use_argb = 1;
 
 		} else if((flags & 0x7F) > 0) {
@@ -492,8 +493,10 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 		}
 
 		// validate encoding parameters
-		if(WebPValidateConfig(&config) == 0) {
-			throw "Failed to initialize encoder";
+		char* validationResult = WebPValidateConfigMessage(&config);
+		
+		if(validationResult) {
+			throw validationResult;
 		}
 
 		// --- Perform encoding ---
