@@ -479,6 +479,7 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 		if((flags & WEBP_LOSSLESS) == WEBP_LOSSLESS) {
 			// lossless encoding
 			config.lossless = 1;
+			config.quality = 100;
 			picture.use_argb = 1;
 
 		} else if((flags & 0x7F) > 0) {
@@ -492,8 +493,10 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 		}
 
 		// validate encoding parameters
-		if(WebPValidateConfig(&config) == 0) {
-			throw "Failed to initialize encoder";
+		char* validationResult = WebPValidateConfigMessage(&config);
+		
+		if(validationResult) {
+			throw validationResult;
 		}
 
 		// --- Perform encoding ---

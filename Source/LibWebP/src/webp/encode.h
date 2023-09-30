@@ -197,6 +197,8 @@ WEBP_EXTERN int WebPConfigLosslessPreset(WebPConfig* config, int level);
 // within their valid ranges.
 WEBP_EXTERN int WebPValidateConfig(const WebPConfig* config);
 
+char* WebPValidateConfigMessage(const WebPConfig* config);
+
 //------------------------------------------------------------------------------
 // Input / Output
 // Structure for storing auxiliary statistics.

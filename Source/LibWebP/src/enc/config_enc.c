@@ -96,41 +96,48 @@ int WebPConfigInitInternal(WebPConfig* config,
 }
 
 int WebPValidateConfig(const WebPConfig* config) {
-  if (config == NULL) return 0;
-  if (config->quality < 0 || config->quality > 100) return 0;
-  if (config->target_size < 0) return 0;
-  if (config->target_PSNR < 0) return 0;
-  if (config->method < 0 || config->method > 6) return 0;
-  if (config->segments < 1 || config->segments > 4) return 0;
-  if (config->sns_strength < 0 || config->sns_strength > 100) return 0;
-  if (config->filter_strength < 0 || config->filter_strength > 100) return 0;
-  if (config->filter_sharpness < 0 || config->filter_sharpness > 7) return 0;
-  if (config->filter_type < 0 || config->filter_type > 1) return 0;
-  if (config->autofilter < 0 || config->autofilter > 1) return 0;
-  if (config->pass < 1 || config->pass > 10) return 0;
-  if (config->qmin < 0 || config->qmax > 100 || config->qmin > config->qmax) {
-    return 0;
-  }
-  if (config->show_compressed < 0 || config->show_compressed > 1) return 0;
-  if (config->preprocessing < 0 || config->preprocessing > 7) return 0;
-  if (config->partitions < 0 || config->partitions > 3) return 0;
-  if (config->partition_limit < 0 || config->partition_limit > 100) return 0;
-  if (config->alpha_compression < 0) return 0;
-  if (config->alpha_filtering < 0) return 0;
-  if (config->alpha_quality < 0 || config->alpha_quality > 100) return 0;
-  if (config->lossless < 0 || config->lossless > 1) return 0;
-  if (config->near_lossless < 0 || config->near_lossless > 100) return 0;
-  if (config->image_hint >= WEBP_HINT_LAST) return 0;
-  if (config->emulate_jpeg_size < 0 || config->emulate_jpeg_size > 1) return 0;
-  if (config->thread_level < 0 || config->thread_level > 1) return 0;
-  if (config->low_memory < 0 || config->low_memory > 1) return 0;
-  if (config->exact < 0 || config->exact > 1) return 0;
-  if (config->use_delta_palette < 0 || config->use_delta_palette > 1) {
-    return 0;
-  }
-  if (config->use_sharp_yuv < 0 || config->use_sharp_yuv > 1) return 0;
+    if (WebPValidateConfigMessage(config))
+        return 0;
+    
+    return 1;
+}
 
-  return 1;
+char* WebPValidateConfigMessage(const WebPConfig* config) {
+  if (config == NULL) return "Config is null";
+  if (config->quality < 0 || config->quality > 100) return "Invalid quality";
+  if (config->target_size < 0) return "Invalid target_size";
+  if (config->target_PSNR < 0) return "Invalid target_PSNR";
+  if (config->method < 0 || config->method > 6) return "Invalid method";
+  if (config->segments < 1 || config->segments > 4) return "Invalid segments";
+  if (config->sns_strength < 0 || config->sns_strength > 100) return "Invalid sns_strength";
+  if (config->filter_strength < 0 || config->filter_strength > 100) return "Invalid filter_strength";
+  if (config->filter_sharpness < 0 || config->filter_sharpness > 7) return "Invalid filter_sharpness";
+  if (config->filter_type < 0 || config->filter_type > 1) return "Invalid filter_type";
+  if (config->autofilter < 0 || config->autofilter > 1) return "Invalid autofilter";
+  if (config->pass < 1 || config->pass > 10) return "Invalid pass";
+  if (config->qmin < 0 || config->qmax > 100 || config->qmin > config->qmax) {
+      return "Invalid qmin or qmax";
+  }
+  if (config->show_compressed < 0 || config->show_compressed > 1) return "Invalid show_compressed";
+  if (config->preprocessing < 0 || config->preprocessing > 7) return "Invalid preprocessing";
+  if (config->partitions < 0 || config->partitions > 3) return "Invalid partitions";
+  if (config->partition_limit < 0 || config->partition_limit > 100) return "Invalid partition_limit";
+  if (config->alpha_compression < 0) return "Invalid alpha_compression";
+  if (config->alpha_filtering < 0) return "Invalid alpha_filtering";
+  if (config->alpha_quality < 0 || config->alpha_quality > 100) return "Invalid alpha_quality";
+  if (config->lossless < 0 || config->lossless > 1) return "Invalid lossless";
+  if (config->near_lossless < 0 || config->near_lossless > 100) return "Invalid near_lossless";
+  if (config->image_hint >= WEBP_HINT_LAST) return "Invalid image_hint";
+  if (config->emulate_jpeg_size < 0 || config->emulate_jpeg_size > 1) return "Invalid emulate_jpeg_size";
+  if (config->thread_level < 0 || config->thread_level > 1) return "Invalid thread_level";
+  if (config->low_memory < 0 || config->low_memory > 1) return "Invalid low_memory";
+  if (config->exact < 0 || config->exact > 1) return "Invalid exact";
+  if (config->use_delta_palette < 0 || config->use_delta_palette > 1) {
+      return "Invalid use_delta_palette";
+  }
+  if (config->use_sharp_yuv < 0 || config->use_sharp_yuv > 1) return "Invalid use_sharp_yuv";
+
+  return 0;
 }
 
 //------------------------------------------------------------------------------
