@@ -17,13 +17,13 @@ MODULES = $(SRCS:.c=.o)
 MODULES := $(MODULES:.cpp=.o)
 CFLAGS ?= -O3 -fPIC -fexceptions -fvisibility=hidden
 # OpenJPEG
-CFLAGS += -DOPJ_STATIC
+CFLAGS += -DOPJ_STATIC 
 # LibRaw
 CFLAGS += -DNO_LCMS
 # LibJXR
 CFLAGS += -DDISABLE_PERF_MEASUREMENT -D__ANSI__
 CFLAGS += $(INCLUDE)
-CXXFLAGS ?= -O3 -fPIC -fexceptions -fvisibility=hidden -Wno-ctor-dtor-privacy
+CXXFLAGS ?= -O3 -fPIC -fexceptions -fvisibility=hidden -Wno-ctor-dtor-privacy -std=c++14
 # LibJXR
 CXXFLAGS += -D__ANSI__
 CXXFLAGS += $(INCLUDE)
