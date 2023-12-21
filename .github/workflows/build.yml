@@ -18,6 +18,8 @@ jobs:
         run: |
           make all
           ls -ao
+          ls -ao Dist
+          tree ./
       # - uses: actions/upload-artifact@v3
       #   with:
       #     path: Native/libmikktspace.so
