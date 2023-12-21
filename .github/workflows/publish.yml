@@ -1,0 +1,77 @@
+name: Release & Publish
+
+# When a release is published
+on:
+  release:
+    types: [published]
+jobs:
+  publishLinux:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r25c
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+      - name: Build Native Linux
+        run: |
+          cd Native/
+          cmake ./
+          make
+          ls -ao
+      - uses: actions/upload-artifact@v3
+        with:
+          path: Native/libmikktspace.so
+          name: linux_x64_libmikktspace.so
+          retention-days: 1
+      - name: Build Native Arm/Android
+        run: |
+          cd Native/
+          ndk-build
+      - uses: actions/upload-artifact@v3
+        with:
+          path: Native/libs/armeabi-v7a/libmikktspace.so
+          name: android_ARMv7_libmikktspace.so
+          retention-days: 1
+  publishWindows:
+    needs: [publishLinux]
+    env:
+      VERSION: ${{ github.event.release.tag_name }}
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Native Windows
+        run: |
+          cd Native/
+          cmake ./
+          cmake --build ./ --config Release
+          dir
+      - name: Setup .NET 7
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Build Managed
+        run: |
+          cd CSharp
+          dotnet restore
+          dotnet build --configuration Release --no-restore -p:Version=${{ env.VERSION }}
+      - name: Download Native Libraries
+        uses: actions/download-artifact@v3
+        with:
+          path: runtimes/
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: runtimes/
+      - name: Pack & Push
+        run: |
+          cd CSharp
+          dotnet pack .\Mikktspace.NET.csproj --output nupkgs --configuration Release -p:Version=${{ env.VERSION }}
+          dotnet nuget push nupkgs\*.nupkg -k ${{ secrets.NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
+      - uses: actions/upload-artifact@v3
+        with:
+          path: CSharp/nupkgs/YellowDogman.Mikktspace.NET.${{ env.VERSION }}.nupkg
+          name: YellowDogman.Mikktspace.NET.${{ env.VERSION }}.nupkg
+          retention-days: 1
