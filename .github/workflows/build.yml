@@ -1,4 +1,14 @@
-on: push
+on:
+  push:
+    paths-ignore:
+      - '**/*.md'
+    branches:
+      - feat/ci
+  pull_request:
+    branches:
+      - feat/ci
+    paths-ignore:
+      - '**/*.md'
 jobs:
   buildLinux:
     runs-on: ubuntu-latest
