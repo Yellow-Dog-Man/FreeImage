@@ -10,12 +10,6 @@ on:
     paths-ignore:
       - '**/*.md'
 
-# ├── Dist
-# │   ├── FreeImage.h
-# │   ├── libfreeimage-3.18.1.so
-# │   └── libfreeimage.a
-
-
 jobs:
   buildLinux:
     runs-on: ubuntu-latest
@@ -36,4 +30,13 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
       - name: Build Solution
         run: |
-          msbuild.exe FreeImage.2017.vcxproj /p:Configuration=Release
+          msbuild.exe FreeImage.2017.vcxproj /p:Configuration=Release /p:Platform=x64
+          msbuild.exe FreeImage.2017.vcxproj /p:Configuration=Release /p:Platform=Win32
+      - uses: actions/upload-artifact@v4
+        with:
+          path: Dist/x32
+          name: win32-dist
+      - uses: actions/upload-artifact@v4
+        with:
+          path: Dist/x64
+          name: win64-dist
