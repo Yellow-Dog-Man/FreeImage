@@ -9,31 +9,25 @@ on:
       - feat/ci
     paths-ignore:
       - '**/*.md'
+
+# ├── Dist
+# │   ├── FreeImage.h
+# │   ├── libfreeimage-3.18.1.so
+# │   └── libfreeimage.a
+
+
 jobs:
   buildLinux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Build Native Linux
-        run: |
-          make all
-          ls -ao
-          ls -ao Dist
-          tree ./
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     path: Native/libmikktspace.so
-      #     name: linux_x64_libmikktspace.so
-      #     retention-days: 1
-      # - name: Build Native Arm/Android
-      #   run: |
-      #     cd Native/
-      #     ndk-build
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     path: Native/libs/armeabi-v7a/libmikktspace.so
-      #     name: android_ARMv7_libmikktspace.so
-      #     retention-days: 1
+        run: make all
+      - uses: actions/upload-artifact@v4
+        with:
+          path: Dist/
+          name: linux-dist
+          retention-days: 1
   buildWindows:
     runs-on: windows-latest
     steps:
@@ -42,6 +36,8 @@ jobs:
         run: |
           make all
           dir
+          dir Dist
+          tree
       # - name: Setup .NET 7
       #   uses: actions/setup-dotnet@v3
       #   with:
