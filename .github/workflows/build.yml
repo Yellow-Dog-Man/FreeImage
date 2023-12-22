@@ -36,7 +36,7 @@ jobs:
           name: android-dist
           retention-days: 1
   buildWindows:
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v3
       - name: Setup MSBuild
@@ -53,3 +53,12 @@ jobs:
         with:
           path: Dist/x64
           name: win64-dist
+      - name: Setup .NET 7
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        working-directory: ./Wrapper/FreeImage.NET/cs/Library
+        run: dotnet build Library.csproj --configuration Release
