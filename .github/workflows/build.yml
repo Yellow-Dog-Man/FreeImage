@@ -29,8 +29,12 @@ jobs:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - name: Build Arm/Android
         run: |
-          ndk-build
-          tree
+          ndk-build NDK_LIBS_OUT=./android/libs NDK_OUT=./android/obj
+      - uses: actions/upload-artifact@v4
+        with:
+          path: android/
+          name: android-dist
+          retention-days: 1
   buildWindows:
     runs-on: windows-latest
     steps:
