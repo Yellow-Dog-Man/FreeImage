@@ -33,9 +33,9 @@ ifeq ($(shell sh -c 'uname -m 2>/dev/null || echo not'),x86_64)
 	CXXFLAGS += -fPIC
 endif
 
-TARGET  = freeimage
+TARGET  = FreeImage
 STATICLIB = lib$(TARGET).a
-SHAREDLIB = lib$(TARGET)-$(VER_MAJOR).$(VER_MINOR).so
+SHAREDLIB = lib$(TARGET).so
 LIBNAME	= lib$(TARGET).so
 VERLIBNAME = $(LIBNAME).$(VER_MAJOR)
 HEADER = Source/FreeImage.h
