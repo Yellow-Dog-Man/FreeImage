@@ -22,6 +22,15 @@ jobs:
           path: Dist/
           name: linux-dist
           retention-days: 1
+      - uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r25c
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+      - name: Build Arm/Android
+        run: |
+          ndk-build
+          tree
   buildWindows:
     runs-on: windows-latest
     steps:
