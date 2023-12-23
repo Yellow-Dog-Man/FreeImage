@@ -87,7 +87,7 @@ jobs:
         with:
           nuget-api-key: ${{ secrets.NUGET_TOKEN }}
       - name: Push Nuget
-        run: nuget push dist\nuget-dist\*.nupkg -ApiKey ${{ secrets.NUGET_TOKEN }} -Source https://api.nuget.org/v3/index.json
+        run: nuget push dist/nuget-dist/*.nupkg -ApiKey ${{ secrets.NUGET_TOKEN }} -Source https://api.nuget.org/v3/index.json
       - name: Prep Archives
         run: | 
           tar -czvf linux-dist.tar.gz dist/linux-dist
