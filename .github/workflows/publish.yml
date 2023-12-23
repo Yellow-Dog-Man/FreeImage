@@ -62,8 +62,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: native/
-      - name: File systems suck where are we
-        run: tree
       - name: Build
         working-directory: ./Wrapper/FreeImage.NET/cs/Library
         run: msbuild.exe Library.csproj /p:Configuration=Release
@@ -90,10 +88,10 @@ jobs:
         run: nuget push ./dist/nuget-dist/*.nupkg -ApiKey ${{ secrets.NUGET_TOKEN }} -Source https://api.nuget.org/v3/index.json
       - name: Prep Archives
         run: | 
-          tar -czvf linux-dist.tar.gz dist/linux-dist
-          tar -czvf android-dist.tar.gz dist/android-dist
-          zip -r win32-dist.zip dist/win32-dist
-          zip -r win32-dist.zip dist/win64-dist
+          tar -czvf linux-dist.tar.gz ./dist/linux-dist
+          tar -czvf android-dist.tar.gz ./dist/android-dist
+          zip -r win32-dist.zip ./dist/win32-dist
+          zip -r win64-dist.zip ./dist/win64-dist
       - name: Upload Tarbells
         uses: svenstaro/upload-release-action@v2
         with:
