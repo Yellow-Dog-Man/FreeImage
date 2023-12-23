@@ -36,6 +36,7 @@ jobs:
           name: android-dist
           retention-days: 1
   buildWindows:
+    needs: [buildLinux]
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@v3
