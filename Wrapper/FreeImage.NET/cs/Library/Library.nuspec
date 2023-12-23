@@ -23,8 +23,8 @@
       <file src="..\..\..\..\native\android-dist\libs\armeabi-v7a\libFreeImageShared.so" target="runtimes\android-arm\native\" />
 
       <!-- WINDOWS -->
-      <file src="...\..\..\..\native\win32-dist\" target="runtimes\win10-x86\native\" />
-      <file src="...\..\..\..\native\win64-dist\" target="runtimes\win10-x64\native\" />
+      <file src="..\..\..\..\native\win32-dist\" target="runtimes\win10-x86\native\" />
+      <file src="..\..\..\..\native\win64-dist\" target="runtimes\win10-x64\native\" />
 
     </files>
 </package>
