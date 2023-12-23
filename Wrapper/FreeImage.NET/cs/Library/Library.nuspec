@@ -6,7 +6,7 @@
     <authors>Free Software Foundation, Inc., FreeImage, DataGis, Yellow Dog Man Studios s.r.o.</authors>
     <owners>FreeImage, Free Software Foundation, Inc.</owners>
     <projectUrl>https://github.com/Yellow-Dog-Man/FreeImage</projectUrl>
-    <description>Package description</description>
+    <description>FreeImage is an Open Source library project for developers who would like to support popular graphics image formats like PNG, BMP, JPEG, TIFF and others as needed by today's multimedia applications.</description>
     <copyright>Copyright 2003-2011, FreeImage, DataGis</copyright>
     <dependencies>
       <group targetFramework=".NETFramework3.5" />
@@ -14,7 +14,8 @@
   </metadata>
   <files>
       <!-- MANAGED -->
-      <file src=".\bin\Release\FreeImageNet.dll" target="lib\net35\"/>
+      <!--This one is included by default somehow-->
+      <!--<file src=".\bin\Release\FreeImageNet.dll" target="lib\net35\"/>-->
 
       <!-- LINUX -->
       <file src="..\..\..\..\native\linux-dist\**\*.*" target="runtimes\linux-x64\native\" />
