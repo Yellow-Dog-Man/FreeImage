@@ -67,7 +67,7 @@ jobs:
         run: msbuild.exe Library.csproj /p:Configuration=Release
       - name: Pack
         working-directory: ./Wrapper/FreeImage.NET/cs/Library
-        run: nuget pack Library.csproj -OutputDirectory nupkgs -Version 0.1.0 -Properties version="0.1.0"
+        run: nuget pack Library.csproj -OutputDirectory nupkgs -Version 0.1.0 -Properties version="0.1.0" Configuration=Release
       - uses: actions/upload-artifact@v4
         with:
           path: Wrapper/FreeImage.NET/cs/Library/nupkgs
