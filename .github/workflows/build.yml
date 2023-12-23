@@ -57,6 +57,17 @@ jobs:
         uses: NuGet/setup-nuget@v1
         with:
           nuget-api-key: ${{ secrets.NUGET_TOKEN }}
+      - name: Download Native Libraries
+        uses: actions/download-artifact@v3
+        with:
+          path: native/
       - name: Build
         working-directory: ./Wrapper/FreeImage.NET/cs/Library
         run: msbuild.exe Library.csproj /p:Configuration=Release
+      - name: Pack
+        working-directory: ./Wrapper/FreeImage.NET/cs/Library
+        run: nuget pack Library.csproj -OutputDirectory nupkgs -Build -Version 0.1.0 -Properties version="0.1.0"
+      - uses: actions/upload-artifact@v4
+        with:
+          path: Wrapper/FreeImage.NET/cs/Library/nupkgs
+          name: nuget-dist
