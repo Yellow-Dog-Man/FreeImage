@@ -11,7 +11,8 @@
     <dependencies>
       <group targetFramework=".NETFramework3.5" />
     </dependencies>
-    <files>
+  </metadata>
+  <files>
       <!-- MANAGED -->
       <file src=".\bin\Release\FreeImageNet.dll" target="lib\net35\"/>
 
@@ -26,5 +27,4 @@
       <file src="...\..\..\..\native\win64-dist\" target="runtimes\win10-x64\native\" />
 
     </files>
-  </metadata>
 </package>
