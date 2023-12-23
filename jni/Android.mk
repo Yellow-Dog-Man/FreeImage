@@ -40,7 +40,7 @@ LOCAL_C_INCLUDES   := $(LOCAL_PATH)/Source \
                         $(LOCAL_PATH)/Source/LibWebP/src/utils \
                         $(LOCAL_PATH)/Source/LibWebP/src/webp \
                         $(LOCAL_PATH)/Source/Missing
-LOCAL_SRC_FILES    := $(SRCS) ./Source/Missing/swab.cpp
+#LOCAL_SRC_FILES    := $(SRCS) ./Source/Missing/swab.cpp
 LOCAL_CPP_FEATURES := rtti exceptions
 LOCAL_CFLAGS       := -O3 -fPIC -D__ANSI__ -DDISABLE_PERF_MEASUREMENT
 include $(BUILD_SHARED_LIBRARY)

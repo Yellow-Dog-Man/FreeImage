@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>YellowDogMan.FreeImage.NET</id>
+    <version>$version$</version>
+    <authors>Free Software Foundation, Inc., FreeImage, DataGis, Yellow Dog Man Studios s.r.o.</authors>
+    <owners>FreeImage, Free Software Foundation, Inc.</owners>
+    <projectUrl>https://github.com/Yellow-Dog-Man/FreeImage</projectUrl>
+    <description>FreeImage is an Open Source library project for developers who would like to support popular graphics image formats like PNG, BMP, JPEG, TIFF and others as needed by today's multimedia applications.</description>
+    <copyright>Copyright 2003-2011, FreeImage, DataGis</copyright>
+    <dependencies>
+      <group targetFramework=".NETFramework3.5" />
+    </dependencies>
+  </metadata>
+  <files>
+      <!-- MANAGED -->
+      <!--This one is included by default somehow-->
+      <!--<file src=".\bin\Release\FreeImageNet.dll" target="lib\net35\"/>-->
+
+      <!-- LINUX -->
+      <file src="..\..\..\..\native\linux-dist\**\*.*" target="runtimes\linux-x64\native\" />
+
+      <!-- ANDROID -->
+      <file src="..\..\..\..\native\android-dist\libs\armeabi-v7a\libFreeImageShared.so" target="runtimes\android-arm\native\" />
+
+      <!-- WINDOWS -->
+      <file src="..\..\..\..\native\win32-dist\**\*.*" target="runtimes\win10-x86\native\" />
+      <file src="..\..\..\..\native\win64-dist\**\*.*" target="runtimes\win10-x64\native\" />
+
+    </files>
+</package>
