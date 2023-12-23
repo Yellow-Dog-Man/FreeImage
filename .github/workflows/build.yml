@@ -62,6 +62,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: native/
+      - name: File systems suck where are we
+        run: tree
       - name: Build
         working-directory: ./Wrapper/FreeImage.NET/cs/Library
         run: msbuild.exe Library.csproj /p:Configuration=Release
