@@ -472,7 +472,7 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 
 		config.thread_level = 1;
 		// quality/speed trade-off (0=fast, 6=slower-better)
-		config.method = 6;
+		config.method = 0;
 
 		config.exact = (flags & WEBP_EXACT) == WEBP_EXACT;
 
