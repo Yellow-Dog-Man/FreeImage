@@ -9,12 +9,16 @@ on:
 jobs:
   buildLinux:
     runs-on: ubuntu-latest
+    container: debian:buster # Using debian buster environment for glibc backwards compatibility, see https://github.com/Yellow-Dog-Man/FreeImage/pull/12
     env:
       VERSION: ${{ github.event.release.tag_name }}
     steps:
       - uses: actions/checkout@v4
       - name: Build Native Linux
-        run: make all
+        run: |
+          apt update
+          apt install -y make gcc g++ unzip
+          make all
       - uses: actions/upload-artifact@v4
         with:
           path: Dist/
