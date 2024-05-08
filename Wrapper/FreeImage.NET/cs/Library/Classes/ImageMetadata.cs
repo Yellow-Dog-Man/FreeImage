@@ -60,14 +60,15 @@ namespace FreeImageAPI.Metadata
 		/// <param name="dib">Handle to a FreeImage bitmap.</param>
 		public ImageMetadata(FIBITMAP dib) : this(dib, false) { }
 
-		/// <summary>
-		/// Initializes a new instance based on the specified <see cref="FIBITMAP"/>,
-		/// showing or hiding empry models.
-		/// </summary>
-		/// <param name="dib">Handle to a FreeImage bitmap.</param>
-		/// <param name="hideEmptyModels">When <b>true</b>, empty metadata models
+        /// <summary>
+        /// Initializes a new instance based on the specified <see cref="FIBITMAP"/>,
+        /// showing or hiding empry models.
+        /// </summary>
+        /// <param name="dib">Handle to a FreeImage bitmap.</param>
+        /// <param name="hideEmptyModels">When <b>true</b>, empty metadata models
 		/// will be hidden until a tag to this model is added.</param>
-		public ImageMetadata(FIBITMAP dib, bool hideEmptyModels)
+        /// <param name="includeRaw">When <b>true</b>, include raw byte access to EXIF, <see cref="MDM_EXIF_RAW"/>.
+        public ImageMetadata(FIBITMAP dib, bool hideEmptyModels, bool includeRaw = false)
 		{
 			if (dib.IsNull) throw new ArgumentNullException("dib");
 			data = new List<MetadataModel>(FreeImage.FREE_IMAGE_MDMODELS.Length);
@@ -86,6 +87,10 @@ namespace FreeImageAPI.Metadata
 			data.Add(new MDM_IPTC(dib));
 			data.Add(new MDM_NODATA(dib));
 			data.Add(new MDM_XMP(dib));
+
+            // This is based on: https://sourceforge.net/p/freeimage/discussion/36111/thread/2d087f91/
+            if (includeRaw)
+				data.Add(new MDM_EXIF_RAW(dib));
 		}
 
 		/// <summary>

@@ -386,6 +386,34 @@ namespace FreeImageAPI.Metadata
 
     /// <summary>
     /// Represents a collection of all tags contained in the metadata model
+    /// <see cref="FREE_IMAGE_MDMODEL.FIMD_EXIF_RAW"/>.
+    /// </summary>
+    /// <remarks>
+    /// FreeImage keeps two separate copies of Exif Metadata in memory. 
+    /// One is used/found in <see cref="MDM_EXIF_MAIN"/> and its extensions(e.g. <see cref="MDM_EXIF_GPS"/>).
+    /// Another one is used when files are actually written that support the EXIF Format. In some cases you want to access, the raw data.
+    /// A good example of this is when using <see cref="MetadataModel.DestroyModel"/> to wipe EXIF data on an image, 
+    /// that you want persisted if that file is exported again from FreeImage.
+    /// </remarks>
+    public class MDM_EXIF_RAW : MetadataModel
+    {
+        /// <summary>
+        /// Initializes a new instance of this class.
+        /// </summary>
+        /// <param name="dib">Handle to a FreeImage bitmap.</param>
+        public MDM_EXIF_RAW(FIBITMAP dib) : base(dib) { }
+
+        /// <summary>
+        /// Retrieves the datamodel that this instance represents.
+        /// </summary>
+        public override FREE_IMAGE_MDMODEL Model
+        {
+            get { return FREE_IMAGE_MDMODEL.FIMD_EXIF_RAW; }
+        }
+    }
+
+    /// <summary>
+    /// Represents a collection of all tags contained in the metadata model
     /// <see cref="FREE_IMAGE_MDMODEL.FIMD_EXIF_EXIF"/>.
     /// </summary>
     public class MDM_EXIF_EXIF : MetadataModel
