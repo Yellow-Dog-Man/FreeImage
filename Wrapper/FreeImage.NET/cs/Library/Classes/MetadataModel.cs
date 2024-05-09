@@ -148,7 +148,7 @@ namespace FreeImageAPI.Metadata
 		/// which will remove all tags of this model from the bitmap.
 		/// </summary>
 		/// <returns>Returns true on success, false on failure.</returns>
-		public bool DestoryModel()
+		public bool DestroyModel()
 		{
 			return FreeImage.SetMetadata(Model, dib, null, FITAG.Zero);
 		}

@@ -87,6 +87,12 @@ namespace FreeImageAPI
 		/// <summary>
 		/// Used to attach other metadata types to a dib
 		/// </summary>
-		FIMD_CUSTOM = 10
+		FIMD_CUSTOM = 10,
+
+        /// <summary>
+        /// Raw access to EXIF.
+        /// </summary>
+        /// <remarks>This is based on: https://sourceforge.net/p/freeimage/discussion/36111/thread/2d087f91/</remarks>
+        FIMD_EXIF_RAW = 11
 	}
 }
