@@ -489,6 +489,7 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 			// quality/speed trade-off (0=fast, 6=slower-better)
 			config.method = 5;
 			//config.autofilter = 1;	// improves lossy quality but is NOTICEABLY slower
+			config.use_sharp_yuv = 1;	// "config.preprocessing = 4;" is the old/alternative way to activate SharpYUV. NOTE: in some rare'ish cases SharpYUV can cause some colors to be more red then they should be
 
 			// quality is between 1 (smallest file) and 100 (biggest) - default to 75
 			config.quality = (float)(flags & 0x7F);
