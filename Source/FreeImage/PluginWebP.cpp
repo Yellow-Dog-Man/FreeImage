@@ -471,20 +471,25 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 		WebPConfigInit(&config);
 
 		config.thread_level = 1;
-		// quality/speed trade-off (0=fast, 6=slower-better)
-		config.method = 0;
 
 		config.exact = (flags & WEBP_EXACT) == WEBP_EXACT;
 
 		if((flags & WEBP_LOSSLESS) == WEBP_LOSSLESS) {
 			// lossless encoding
 			config.lossless = 1;
-			config.quality = 100;
+			// size/speed trade-off (method 0 and quality 0 = lowest effort but largest file-size while method 6 and quality 100 = highest effort and smallest file-size. NOTE: "quality" in this context is NOT related to anything visual)
+			config.method = 3;
+			config.quality = 30;
+
 			picture.use_argb = 1;
 
 		} else if((flags & 0x7F) > 0) {
 			// lossy encoding
 			config.lossless = 0;
+			// quality/speed trade-off (0=fast, 6=slower-better)
+			config.method = 5;
+			//config.autofilter = 1;	// improves lossy quality but is NOTICEABLY slower
+
 			// quality is between 1 (smallest file) and 100 (biggest) - default to 75
 			config.quality = (float)(flags & 0x7F);
 			if(config.quality > 100) {
