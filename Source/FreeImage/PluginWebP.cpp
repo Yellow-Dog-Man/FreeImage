@@ -478,8 +478,8 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 			// lossless encoding
 			config.lossless = 1;
 			// size/speed trade-off (method 0 and quality 0 = lowest effort but largest file-size while method 6 and quality 100 = highest effort and smallest file-size. NOTE: "quality" in this context is NOT related to anything visual)
-			config.method = 3;
-			config.quality = 30;
+			config.method = 4;
+			config.quality = 50;
 
 			picture.use_argb = 1;
 
