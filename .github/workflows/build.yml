@@ -9,6 +9,8 @@ on:
       - main
     paths-ignore:
       - "**/*.md"
+  release:
+    types: [published]
 
 jobs:
   buildLinuxArm:
@@ -60,7 +62,7 @@ jobs:
           name: android-dist
           retention-days: 1
   buildWindows:
-    needs: [buildLinux]
+    needs: [buildLinux, buildLinuxArm]
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@v3
@@ -99,3 +101,41 @@ jobs:
         with:
           path: Wrapper/FreeImage.NET/cs/Library/nupkgs
           name: nuget-dist
+
+  upload-release:
+    needs: [buildsWindows, buildLinux, buildLinuxArm]
+    if: github.event_name == 'release' && github.event.action == 'published'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: ./dist
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NUGET_TOKEN }}
+      - name: Push Nuget
+        run: nuget push ./dist/nuget-dist/*.nupkg -ApiKey ${{ secrets.NUGET_TOKEN }} -Source https://api.nuget.org/v3/index.json
+      - name: Prep Archives
+        run: |
+          tar -czvf linux-dist.tar.gz ./dist/linux-dist
+          tar -czvf android-dist.tar.gz ./dist/android-dist
+          tar -czvf arm-dist.tar.gz ./dist/arm-dist
+          zip -r win32-dist.zip ./dist/win32-dist
+          zip -r win64-dist.zip ./dist/win64-dist
+      - name: Upload Tarbells
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./*.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+      - name: Upload Zips
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./*.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
