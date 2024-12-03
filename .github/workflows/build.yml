@@ -44,12 +44,11 @@ jobs:
         run: |
           apt update
           apt install -y docker.io
-          systemctl start docker
-          systemctl enable docker
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v1
         with:
           platforms: arm64
+          image: tonistiigi/binfmt:latest
       - name: Build for ARM
         run: |
           docker run --rm -v $(pwd):/workspace -w /workspace arm32v7/debian:buster apt update && apt install -y make gcc g++ unzip
