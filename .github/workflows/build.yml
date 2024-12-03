@@ -20,10 +20,6 @@ jobs:
         uses: docker/setup-qemu-action@v2
         with:
           platforms: arm64
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
       - name: Build Native Linux for ARM
         run: |
           docker run --rm --privileged tonistiigi/binfmt --install all
