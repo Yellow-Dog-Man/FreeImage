@@ -40,6 +40,12 @@ jobs:
           path: android/
           name: android-dist
           retention-days: 1
+      - name: Install Docker
+        run: |
+          apt update
+          apt install -y docker.io
+          systemctl start docker
+          systemctl enable docker
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v1
         with:
