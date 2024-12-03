@@ -51,8 +51,7 @@ jobs:
           image: tonistiigi/binfmt:latest
       - name: Build for ARM
         run: |
-          export DOCKER_DEFAULT_PLATFORM=linux/arm64
-          docker run --rm -v $(pwd):/workspace -w /workspace debian:buster apt update && apt install -y make gcc g++ unzip && make all
+          docker run --rm -v $(pwd):/workspace -w /workspace --platform linux/arm64 debian:buster sh -c "apt update && apt install -y make gcc g++ unzip && make all"
       - uses: actions/upload-artifact@v4
         with:
           path: Dist/
