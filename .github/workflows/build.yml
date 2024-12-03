@@ -12,6 +12,30 @@ on:
       - "**/*.md"
 
 jobs:
+  buildLinuxArm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: arm64
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+      - name: Build Native Linux for ARM
+        run: |
+          docker run --rm --privileged tonistiigi/binfmt --install all
+          docker run --rm -v $(pwd):/workspace -w /workspace multiarch/debian-debootstrap:arm64-buster sh -c "
+            apt update &&
+            apt install -y make gcc g++ unzip &&
+            make -f Makefile.gnu all"
+      - uses: actions/upload-artifact@v4
+        with:
+          path: Dist/
+          name: arm-dist
+          retention-days: 1
   buildLinux:
     runs-on: ubuntu-latest
     container: debian:buster # Using debian buster environment for glibc backwards compatibility, see https://github.com/Yellow-Dog-Man/FreeImage/pull/12
@@ -39,26 +63,6 @@ jobs:
         with:
           path: android/
           name: android-dist
-          retention-days: 1
-      - name: Install Docker
-        run: |
-          apt update
-          apt install -y docker.io
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v1
-        with:
-          platforms: arm64
-          image: tonistiigi/binfmt:latest
-      - name: Build for ARM
-        run: |
-          docker run --rm -v $(pwd):/workspace -w /workspace multiarch/debian-debootstrap:arm64-buster sh -c "
-            apt update &&
-            apt install -y make gcc g++ unzip &&
-            make CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-linux-gnu-ar RANLIB=aarch64-linux-gnu-ranlib all"
-      - uses: actions/upload-artifact@v4
-        with:
-          path: Dist/
-          name: arm-dist
           retention-days: 1
   buildWindows:
     needs: [buildLinux]
