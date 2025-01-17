@@ -22,6 +22,9 @@ jobs:
     container: debian:buster # Using debian buster environment for glibc backwards compatibility, see https://github.com/Yellow-Dog-Man/FreeImage/pull/12
     steps:
       - uses: actions/checkout@v4
+      - name: Set Output Directory
+        id: set-output-dir
+        run: echo "output_dir=$([[ ${{ matrix.osver }} == 'ubuntu-24.04-arm' ]] && echo './dist/arm-dist' || echo './dist/linux-dist')" >> $GITHUB_ENV
       - name: Build Native Linux
         run: |
           apt update
@@ -30,7 +33,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: Dist/
-          name: linux-dist
+          name: ${{ steps.set-output-dir.outputs.output_dir }}
           retention-days: 1
       - uses: nttld/setup-ndk@v1
         with:
@@ -45,6 +48,7 @@ jobs:
           path: android/
           name: android-dist
           retention-days: 1
+
   buildWindows:
     needs: [buildLinux]
     runs-on: windows-2019
@@ -87,7 +91,7 @@ jobs:
           name: nuget-dist
 
   upload-release:
-    needs: [buildsWindows, buildLinux, buildLinuxArm]
+    needs: [buildsWindows, buildLinux]
     if: github.event_name == 'release' && github.event.action == 'published'
     runs-on: ubuntu-latest
     steps:
