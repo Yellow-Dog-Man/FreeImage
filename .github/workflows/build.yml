@@ -24,12 +24,13 @@ jobs:
       - uses: actions/checkout@v4
       - name: Set Output Directory
         id: set-output-dir
-        run: echo "output_dir=$([[ ${{ matrix.osver }} == 'ubuntu-24.04-arm' ]] && echo './dist/arm-dist' || echo './dist/linux-dist')" >> $GITHUB_ENV
+        run: echo "output_dir=$([[ ${{ matrix.osver }} == 'ubuntu-24.04-arm' ]] && echo './Dist/arm-dist' || echo './Dist/linux-dist')" >> $GITHUB_ENV
       - name: Build Native Linux
         run: |
           apt update
           apt install -y make gcc g++ unzip
           make all
+          mv Dist/linux-dist ${{ steps.set-output-dir.outputs.output_dir }}
       - uses: actions/upload-artifact@v4
         with:
           path: Dist/
