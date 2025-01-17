@@ -23,12 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set dist name
-        id: set-output-dir
         run: |
-          if [[ "${{ matrix.osver }}" == "ubuntu-24.04-arm" ]]; then
-            echo "distname=arm-dist" >> $GITHUB_ENV
+          if ${{ matrix.osver == 'ubuntu-24.04-arm' }}; then
+            echo "distname=arm-dist" >> "$GITHUB_ENV"
           else
-            echo "distname=.linux-dist" >> $GITHUB_ENV
+            echo "distname=linux-dist" >> "$GITHUB_ENV"
           fi
       - name: Build Native Linux
         run: |
