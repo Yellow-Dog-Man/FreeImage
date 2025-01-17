@@ -91,7 +91,7 @@ jobs:
           name: nuget-dist
 
   upload-release:
-    needs: [buildsWindows, buildLinux]
+    needs: [buildWindows, buildLinux]
     if: github.event_name == 'release' && github.event.action == 'published'
     runs-on: ubuntu-latest
     steps:
