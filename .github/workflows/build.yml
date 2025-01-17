@@ -24,17 +24,22 @@ jobs:
       - uses: actions/checkout@v4
       - name: Set Output Directory
         id: set-output-dir
-        run: echo "output_dir=$([[ ${{ matrix.osver }} == 'ubuntu-24.04-arm' ]] && echo './Dist/arm-dist' || echo './Dist/linux-dist')" >> $GITHUB_ENV
+        run: |
+          if [[ "${{ matrix.osver }}" == "ubuntu-24.04-arm" ]]; then
+            echo "output_dir=./Dist/arm-dist" >> $GITHUB_ENV
+          else
+            echo "output_dir=./Dist/linux-dist" >> $GITHUB_ENV
+          fi
       - name: Build Native Linux
         run: |
           apt update
           apt install -y make gcc g++ unzip
           make all
-          mv Dist/linux-dist ${{ steps.set-output-dir.outputs.output_dir }}
+          mv Dist/linux-dist ${{ env.output_dir }}
       - uses: actions/upload-artifact@v4
         with:
           path: Dist/
-          name: ${{ steps.set-output-dir.outputs.output_dir }}
+          name: ${{ env.output_dir }}
           retention-days: 1
       - uses: nttld/setup-ndk@v1
         with:
