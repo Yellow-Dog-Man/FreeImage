@@ -22,13 +22,13 @@ jobs:
     container: debian:buster # Using debian buster environment for glibc backwards compatibility, see https://github.com/Yellow-Dog-Man/FreeImage/pull/12
     steps:
       - uses: actions/checkout@v4
-      - name: Set Output Directory
+      - name: Set dist name
         id: set-output-dir
         run: |
           if [[ "${{ matrix.osver }}" == "ubuntu-24.04-arm" ]]; then
-            echo "output_dir=./Dist/arm-dist" >> $GITHUB_ENV
+            echo "distname=arm-dist" >> $GITHUB_ENV
           else
-            echo "output_dir=./Dist/linux-dist" >> $GITHUB_ENV
+            echo "distname=.linux-dist" >> $GITHUB_ENV
           fi
       - name: Build Native Linux
         run: |
@@ -38,7 +38,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: Dist/
-          name: ${{ env.output_dir }}
+          name: ${{ env.distname }}
           retention-days: 1
       - uses: nttld/setup-ndk@v1
         with:
