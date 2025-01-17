@@ -13,11 +13,10 @@ on:
     types: [published]
 
 jobs:
-  build_matrix:
+  buildLinux:
     strategy:
       matrix:
         osver: ['ubuntu-latest', 'ubuntu-24.04-arm']
-  buildLinux:
     runs-on: ${{ matrix.osver }}
     container: debian:buster # Using debian buster environment for glibc backwards compatibility, see https://github.com/Yellow-Dog-Man/FreeImage/pull/12
     steps:
