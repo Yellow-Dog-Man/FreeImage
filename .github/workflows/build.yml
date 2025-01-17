@@ -41,14 +41,17 @@ jobs:
           name: ${{ env.distname }}
           retention-days: 1
       - uses: nttld/setup-ndk@v1
+        if: ${{ matrix.osver != 'ubuntu-24.04-arm' }}
         with:
           ndk-version: r25c
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - name: Build Arm/Android
+        if: ${{ matrix.osver != 'ubuntu-24.04-arm' }}
         run: |
           ndk-build NDK_LIBS_OUT=./android/libs NDK_OUT=./android/obj
       - uses: actions/upload-artifact@v4
+        if: ${{ matrix.osver != 'ubuntu-24.04-arm' }}
         with:
           path: android/
           name: android-dist
