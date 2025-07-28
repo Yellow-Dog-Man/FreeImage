@@ -471,20 +471,25 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 		WebPConfigInit(&config);
 
 		config.thread_level = 1;
-		// quality/speed trade-off (0=fast, 6=slower-better)
-		config.method = 0;
 
 		config.exact = (flags & WEBP_EXACT) == WEBP_EXACT;
 
 		if((flags & WEBP_LOSSLESS) == WEBP_LOSSLESS) {
 			// lossless encoding
 			config.lossless = 1;
-			config.quality = 100;
+			// Size/speed trade-off. Method 0 quality 0 = fastest but largest file-size. Method 6 quality 100 = slowest and smallest file-size.
+			// NOTE: "quality" in this context is NOT related to anything visual
+			config.method = 0;
+			config.quality = 0;
 			picture.use_argb = 1;
 
 		} else if((flags & 0x7F) > 0) {
 			// lossy encoding
 			config.lossless = 0;
+			// Quality/speed trade-off (0=fast, 6=slower-better)
+			config.method = 5;
+			// Improves color accuracy. NOTE: in some rare cases SharpYUV can cause some colors to be more red then they should be.
+			config.use_sharp_yuv = 1;
 			// quality is between 1 (smallest file) and 100 (biggest) - default to 75
 			config.quality = (float)(flags & 0x7F);
 			if(config.quality > 100) {
@@ -701,4 +706,3 @@ InitWEBP(Plugin *plugin, int format_id) {
 	plugin->supports_icc_profiles_proc = SupportsICCProfiles;
 	plugin->supports_no_pixels_proc = SupportsNoPixels;
 }
-
