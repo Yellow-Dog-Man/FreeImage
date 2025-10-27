@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         osver: [ubuntu-latest, ubuntu-24.04-arm]
-    container: debian:buster # Using debian buster environment for glibc backwards compatibility, see https://github.com/Yellow-Dog-Man/FreeImage/pull/12
+    container: debian:oldstable # Using debian oldstable environment for glibc backwards compatibility, see https://github.com/Yellow-Dog-Man/FreeImage/pull/12
     steps:
       - uses: actions/checkout@v4
       - name: Set dist name
