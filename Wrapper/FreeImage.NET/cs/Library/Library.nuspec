@@ -19,6 +19,7 @@
 
       <!-- LINUX -->
       <file src="..\..\..\..\native\linux-dist\**\*.*" target="runtimes\linux-x64\native\" />
+      <file src="..\..\..\..\native\arm-dist\**\*.*" target="runtimes\linux-arm64\native\" />
 
       <!-- ANDROID -->
       <file src="..\..\..\..\native\android-dist\libs\armeabi-v7a\libFreeImageShared.so" target="runtimes\android-arm\native\" />
