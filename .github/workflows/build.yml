@@ -85,6 +85,8 @@ jobs:
         uses: NuGet/setup-nuget@v1
         with:
           nuget-api-key: ${{ secrets.NUGET_TOKEN }}
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
       - name: Download Native Libraries
         uses: actions/download-artifact@v4
         with:
