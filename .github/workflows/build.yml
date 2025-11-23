@@ -80,6 +80,7 @@ jobs:
     env:
       VERSION: ${{ github.event.release.tag_name }}
     steps:
+      - uses: actions/checkout@v4
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1
         with:
