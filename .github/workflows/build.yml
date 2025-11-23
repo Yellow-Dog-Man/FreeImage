@@ -72,6 +72,14 @@ jobs:
         with:
           path: Dist/x64
           name: win64-dist
+
+  createNuget:
+    needs: [buildWindows, buildLinux]
+    runs-on: windows-2022
+    if: github.event_name == 'release' && github.event.action == 'published'
+    env:
+      VERSION: ${{ github.event.release.tag_name }}
+    steps:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1
         with:
@@ -88,14 +96,14 @@ jobs:
       - name: Pack
         shell: cmd
         working-directory: ./Wrapper/FreeImage.NET/cs/Library
-        run: nuget pack Library.csproj -OutputDirectory nupkgs -Version 0.1.0 -Properties version="0.1.0";Configuration=Release
+        run: nuget pack Library.csproj -OutputDirectory nupkgs -Version ${{ env.VERSION }} -Properties version="${{ env.VERSION }}";Configuration=Release
       - uses: actions/upload-artifact@v4
         with:
           path: Wrapper/FreeImage.NET/cs/Library/nupkgs
           name: nuget-dist
 
   upload-release:
-    needs: [buildWindows, buildLinux]
+    needs: [buildWindows, buildLinux, createNuget]
     if: github.event_name == 'release' && github.event.action == 'published'
     runs-on: ubuntu-latest
     steps:
