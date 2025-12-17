@@ -29,6 +29,17 @@
 #include "strcodec.h"
 #include "decode.h"
 
+#ifdef _MSC_VER
+
+#include <stdlib.h>
+#define bswap_32(x) _byteswap_ulong(x)
+
+#else
+
+#include <byteswap.h>
+
+#endif
+
 #ifdef MEM_TRACE
 #define TRACE_MALLOC    1
 #define TRACE_NEW       0
@@ -61,9 +72,9 @@ static U32 _FORCEINLINE _load4(void* pv)
     U32  v;
     v = ((U16 *) pv)[0];
     v |= ((U32)((U16 *) pv)[1]) << 16;
-    return _byteswap_ulong(v);
+    return bswap_32(v);
 #else // _M_IA64
-    return _byteswap_ulong(*(U32*)pv);
+    return bswap_32(*(U32*)pv);
 #endif // _M_IA64
 #endif // _BIG__ENDIAN_
 }
