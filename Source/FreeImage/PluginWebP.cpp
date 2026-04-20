@@ -471,21 +471,31 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 		WebPConfigInit(&config);
 
 		config.thread_level = 1;
-		// quality/speed trade-off (0=fast, 6=slower-better)
-		config.method = 0;
 
 		config.exact = (flags & WEBP_EXACT) == WEBP_EXACT;
 
 		if((flags & WEBP_LOSSLESS) == WEBP_LOSSLESS) {
-			// lossless encoding
+			// Lossless encoding
 			config.lossless = 1;
-			config.quality = 100;
+			// Size/speed trade-off. Method 0 quality 0 = fastest but largest. Method 6 quality 100 = slowest and smallest
+			// NOTE: "quality" when lossless is enabled is NOT related to anything visual, it purely effects time spent encoding
+			config.method = 1;
+			config.quality = 20;
+			// Make sure lossless is actually lossless
 			picture.use_argb = 1;
+			config.exact = 1;
 
 		} else if((flags & 0x7F) > 0) {
-			// lossy encoding
+			// Lossy encoding
 			config.lossless = 0;
-			// quality is between 1 (smallest file) and 100 (biggest) - default to 75
+			// Quality/size/speed trade-off (0=fast, 6=slower-better)
+			// NOTE: The slowest lossy speed matches the fastest lossless speed
+			config.method = 6;
+			// Improves color accuracy for the forced 4:2:0 color subsampling in lossy WebP
+			// NOTE: In rare cases SharpYUV can cause some colors to become more red
+			config.use_sharp_yuv = 1;
+			// Quality is between 0 (smallest file) and 100 (biggest) - defaults to 75
+			// NOTE: Using method 6 above gives enough wiggle room to raise quality, consider using 80-85
 			config.quality = (float)(flags & 0x7F);
 			if(config.quality > 100) {
 				config.quality = 100;
@@ -701,4 +711,3 @@ InitWEBP(Plugin *plugin, int format_id) {
 	plugin->supports_icc_profiles_proc = SupportsICCProfiles;
 	plugin->supports_no_pixels_proc = SupportsNoPixels;
 }
-
