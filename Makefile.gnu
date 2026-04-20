@@ -21,7 +21,7 @@ CFLAGS += -DOPJ_STATIC
 # LibRaw
 CFLAGS += -DNO_LCMS
 # LibJXR
-CFLAGS += -DDISABLE_PERF_MEASUREMENT -D__ANSI__
+CFLAGS += -DDISABLE_PERF_MEASUREMENT -D__ANSI__ -DPNG_ARM_NEON_OPT=0
 CFLAGS += $(INCLUDE)
 CXXFLAGS ?= -w -O3 -fPIC -fexceptions -fvisibility=hidden -Wno-ctor-dtor-privacy -std=c++11
 # LibJXR

@@ -72,10 +72,21 @@ jobs:
         with:
           path: Dist/x64
           name: win64-dist
+
+  createNuget:
+    needs: [buildWindows, buildLinux]
+    runs-on: windows-2022
+    if: github.event_name == 'release' && github.event.action == 'published'
+    env:
+      VERSION: ${{ github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v4
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1
         with:
           nuget-api-key: ${{ secrets.NUGET_TOKEN }}
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
       - name: Download Native Libraries
         uses: actions/download-artifact@v4
         with:
@@ -88,14 +99,14 @@ jobs:
       - name: Pack
         shell: cmd
         working-directory: ./Wrapper/FreeImage.NET/cs/Library
-        run: nuget pack Library.csproj -OutputDirectory nupkgs -Version 0.1.0 -Properties version="0.1.0";Configuration=Release
+        run: nuget pack Library.csproj -OutputDirectory nupkgs -Version ${{ env.VERSION }} -Properties version="${{ env.VERSION }}";Configuration=Release
       - uses: actions/upload-artifact@v4
         with:
           path: Wrapper/FreeImage.NET/cs/Library/nupkgs
           name: nuget-dist
 
   upload-release:
-    needs: [buildWindows, buildLinux]
+    needs: [buildWindows, buildLinux, createNuget]
     if: github.event_name == 'release' && github.event.action == 'published'
     runs-on: ubuntu-latest
     steps:
@@ -103,11 +114,11 @@ jobs:
         with:
           path: ./dist
       - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1
+        uses: actions/setup-dotnet@v5
         with:
-          nuget-api-key: ${{ secrets.NUGET_TOKEN }}
+          dotnet-version: '10.0.x'
       - name: Push Nuget
-        run: nuget push ./dist/nuget-dist/*.nupkg -ApiKey ${{ secrets.NUGET_TOKEN }} -Source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ./dist/nuget-dist/*.nupkg -k ${{ secrets.NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
       - name: Prep Archives
         run: |
           tar -czvf linux-dist.tar.gz ./dist/linux-dist
