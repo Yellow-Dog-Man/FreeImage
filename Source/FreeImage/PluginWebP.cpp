@@ -477,21 +477,25 @@ EncodeImage(FIMEMORY *hmem, FIBITMAP *dib, int flags) {
 		if((flags & WEBP_LOSSLESS) == WEBP_LOSSLESS) {
 			// Lossless encoding
 			config.lossless = 1;
-			// Size/speed trade-off. Method 0 quality 0 = fastest but largest file-size. Method 6 quality 100 = slowest and smallest file-size.
-			// NOTE: "quality" in this context is NOT related to anything visual, it purely effects time spent encoding.
-			config.method = 0;
-			config.quality = 0;
+			// Size/speed trade-off. Method 0 quality 0 = fastest but largest. Method 6 quality 100 = slowest and smallest
+			// NOTE: "quality" when lossless is enabled is NOT related to anything visual, it purely effects time spent encoding
+			config.method = 1;
+			config.quality = 20;
+			// Make sure lossless is actually lossless
 			picture.use_argb = 1;
+			config.exact = 1;
 
 		} else if((flags & 0x7F) > 0) {
 			// Lossy encoding
 			config.lossless = 0;
 			// Quality/size/speed trade-off (0=fast, 6=slower-better)
-			config.method = 5;
-			// Improves color accuracy for the forced 4:2:0 color subsampling in lossy WebP.
-			// NOTE: In rare cases SharpYUV can cause some colors to become more red.
+			// NOTE: The slowest lossy speed matches the fastest lossless speed
+			config.method = 6;
+			// Improves color accuracy for the forced 4:2:0 color subsampling in lossy WebP
+			// NOTE: In rare cases SharpYUV can cause some colors to become more red
 			config.use_sharp_yuv = 1;
-			// Quality is between 0 (smallest file) and 100 (biggest) - default to 75
+			// Quality is between 0 (smallest file) and 100 (biggest) - defaults to 75
+			// NOTE: Using method 6 above gives enough wiggle room to raise quality, consider using 80-85
 			config.quality = (float)(flags & 0x7F);
 			if(config.quality > 100) {
 				config.quality = 100;
